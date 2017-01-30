@@ -1,0 +1,14 @@
+{
+  "name": "ipsbot",
+  "version": "1.0.0",
+  "description": "Bot that scrapes the account credit from the IPS Marketplace",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Tom Christian",
+  "license": "ISC",
+  "devDependencies": {
+    "osmosis": "^1.1.2"
+  }
+}
