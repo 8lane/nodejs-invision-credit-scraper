@@ -1,4 +1,7 @@
 {
-    "marketplaceCredit": "$0.00",
-    "ipsthemesCredit": ""
+    "marketplace": {
+        "credit": "$0.00",
+        "lastUpdate": "2017-01-31T08:27:05.366Z"
+    },
+    "ipsthemes": null
 }

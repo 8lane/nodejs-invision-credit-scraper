@@ -24,7 +24,7 @@ function scrapeIpsCredit() {
     .get(ipsData.loginPage)
     .submit(ipsData.$formEle, ipsData.credentials)
     .get(ipsData.creditPage)
-    .find(ipsData.creditEle)
+    .find(ipsData.$creditEle)
     .set('accountCredit')
     .data((obj) => setCredit(obj.accountCredit))
     .done(() => writeToFile())
