@@ -1,14 +1,16 @@
 {
-  "name": "ipsbot",
+  "name": "ipscreditscraper",
   "version": "1.0.0",
   "description": "Bot that scrapes the account credit from the IPS Marketplace",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
   },
   "author": "Tom Christian",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
+    "express": "^4.14.1",
     "osmosis": "^1.1.2"
   }
 }
