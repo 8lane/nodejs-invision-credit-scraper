@@ -44,4 +44,6 @@ var IPSCreditScraper = function(credentials) {
   }
 };
 
-exports = module.exports = new IPSCreditScraper(credentials);
+exports = module.exports = function(credentials) {
+  return new IPSCreditScraper(credentials);
+}
