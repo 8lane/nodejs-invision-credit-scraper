@@ -1,42 +1,47 @@
-const express = require('express');
-const fs = require('fs');
-const app     = express();
 const osmosis = require('osmosis');
 
-const creditJson = { marketplace: null };
-const ipsData = {
-  loginPage: 'https://invisionpower.com/login/',
-  creditPage: 'https://invisionpower.com/clients/credit/',
-  $formEle: 'form.ipsForm',
-  $creditEle: '.cNexusCredit_total',
-  credentials: {
-    auth: 'tctc91@gmail.com',
-    password: 'nfoISoxAWn6ZIUz'
+var IPSCreditScraper = function(credentials) {
+  var self = this;
+
+  if(!credentials || !credentials.hasOwnProperty('auth') || !credentials.hasOwnProperty('password')) {
+    console.warn('Missing credentials');
+    return false;
   }
-}
 
-app.get('/scrape', function(req, res){
-  scrapeIpsCredit();
-})
+  const ipsData = {
+    loginPage: 'https://invisionpower.com/login/',
+    creditPage: 'https://invisionpower.com/clients/credit/',
+    $formEle: 'form.ipsForm',
+    $creditEle: '.cNexusCredit_total',
+    credentials: credentials
+  }
 
-function scrapeIpsCredit() {
-  osmosis
-    .get(ipsData.loginPage)
-    .submit(ipsData.$formEle, ipsData.credentials)
-    .get(ipsData.creditPage)
-    .find(ipsData.$creditEle)
-    .set('accountCredit')
-    .data((obj) => setCredit(obj.accountCredit))
-    .done(() => writeToFile())
-}
+  self.creditData = null;
+  self.fetchCredit = fetchCredit;
+  self.buildJson = buildJson;
 
-function setCredit(credit) {
-  creditJson.marketplace = { credit: credit, lastUpdate: new Date() };
-}
+  return self.fetchCredit();
 
-function writeToFile() {
-  fs.writeFile('mp-credit.json', JSON.stringify(creditJson));
-}
+  function fetchCredit() {
+    return new Promise((resolve, reject) => {
+      osmosis
+        .get(ipsData.loginPage)
+        .submit(ipsData.$formEle, ipsData.credentials)
+        .get(ipsData.creditPage)
+        .find(ipsData.$creditEle)
+        .set('accountCredit')
+        .data((obj) => self.buildJson(obj.accountCredit))
+        .error(console.log)
+        .done(() => resolve(self.creditData));
+      });
+  }
 
-app.listen('8081')
-exports = module.exports = scrapeIpsCredit();
+  function buildJson(credit) {
+    this.creditData = {
+      credit: credit,
+      lastUpdate: new Date()
+    };
+  }
+};
+
+exports = module.exports = new IPSCreditScraper(credentials);
